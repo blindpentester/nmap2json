@@ -7,7 +7,7 @@ import argparse
 from lxml import etree
 
 def main():
-    parser = argparse.ArgumentParser(description='Convert nmap, or any  XML output to JSON format.')
+    parser = argparse.ArgumentParser(description='Convert nmap, or any XML output to JSON format.')
     parser.add_argument('-o', '--output', help='Output file name', required=False, nargs='?')
     args = parser.parse_args()
 
@@ -15,31 +15,45 @@ def main():
         parser.print_help()
         sys.exit(1)
 
-    if not sys.stdin.isatty():
-        with open(args.output, 'a') as outfile:
-            outfile.write('[\n')
+    try:
+        if not sys.stdin.isatty():
+            if args.output == '-':
+                output = sys.stdout
+            else:
+                output = open(args.output, 'a')
+            with output:
+                output.write('[\n')
 
-            context = etree.iterparse(sys.stdin.buffer, events=('end',), tag='host')
+                context = etree.iterparse(sys.stdin.buffer, events=('end',), tag='host')
 
-            for event, elem in context:
-                host_dict = etree.tostring(elem, encoding='unicode', method='xml')
-                host_json = xml_to_json(host_dict)
+                first = True
+                for event, elem in context:
+                    host_dict = etree.tostring(elem, encoding='unicode', method='xml')
+                    host_json = xml_to_json(host_dict)
 
-                outfile.write(host_json)
-                outfile.write(',\n')
+                    if not first:
+                        output.write(',\n')
+                    else:
+                        first = False
 
-                # Clear the element to free memory
-                elem.clear()
-                while elem.getprevious() is not None:
-                    del elem.getparent()[0]
+                    output.write(host_json)
 
-            outfile.write('{}\n]')
+                    # Clear the element to free memory
+                    elem.clear()
+                    while elem.getprevious() is not None:
+                        del elem.getparent()[0]
 
-            print(f"JSON output saved to {args.output}")
-    else:
-        print("Usage:")
-        print("  nmap [OPTIONS] [TARGET] -oX - | ./XML-to-JSONu.py -o output.json")
-        print("  cat <filename>.xml | ./XML-to-JSON.py -o <outputfile>.json")
+                output.write('\n]')
+
+                if args.output != '-':
+                    print(f"JSON output saved to {args.output}")
+        else:
+            print("Usage:")
+            print("  nmap [OPTIONS] [TARGET] -oX - | ./XML-to-JSONu.py -o output.json")
+            print("  cat <filename>.xml | ./XML-to-JSON.py -o <outputfile>.json")
+            sys.exit(1)
+    except Exception as e:
+        print(f"Error processing XML file: {e}")
         sys.exit(1)
 
 def xml_to_json(xml_data):
