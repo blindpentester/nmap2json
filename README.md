@@ -8,5 +8,5 @@ It worked, and its kinda dope.  Anyway, here's this thing if you are feeling lim
 
 # Usage:  
   - cat &lt;nmap filename&gt;.xml | ./XML-2-JSON.py -o <ouptut file name>.json
-  - nmap &lt;args you want to use&gt; -oX - | ./XML-2-JSON.py -o <ouptut file name>.json  
+  - nmap &lt;args you want to use&gt; -oX - | ./XML-2-JSON.py -o &lt;ouptut file name&gt;.json  
  
