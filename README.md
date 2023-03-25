@@ -7,7 +7,6 @@ I have been making something that did outputs to JSON, XML and TXT and that is s
 It worked, and its kinda dope.  Anyway, here's this thing if you are feeling limited with xml2json.
 
 # Usage:  
-  - cat &lt;filename&gt;.xml | ./XML-2-JSON.py -o <ouptut file name>.json
+  - cat &lt;nmap filename&gt;.xml | ./XML-2-JSON.py -o <ouptut file name>.json
   - nmap &lt;args you want to use&gt; -oX - | ./XML-2-JSON.py -o <ouptut file name>.json  
-  
  
