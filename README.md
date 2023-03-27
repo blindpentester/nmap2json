@@ -1,4 +1,4 @@
-# nmpa2json
+# nmap2json
 Convert nmap XML to JSON (even big fuckoff ones)
 
 ## Story of how this happened  
