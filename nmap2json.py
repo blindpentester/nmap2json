@@ -7,7 +7,7 @@ import argparse
 from lxml import etree
 
 def main():
-    parser = argparse.ArgumentParser(description='Convert nmap, or any XML output to JSON format.')
+    parser = argparse.ArgumentParser(description='Convert nmap XML output to JSON format.')
     parser.add_argument('-o', '--output', help='Output file name', required=False, nargs='?')
     args = parser.parse_args()
 
@@ -49,8 +49,8 @@ def main():
                     print(f"JSON output saved to {args.output}")
         else:
             print("Usage:")
-            print("  nmap [OPTIONS] [TARGET] -oX - | ./XML-to-JSONu.py -o output.json")
-            print("  cat <filename>.xml | ./XML-to-JSON.py -o <outputfile>.json")
+            print("  nmap [OPTIONS] [TARGET] -oX - | ./nmap2json.py -o output.json")
+            print("  cat <filename>.xml | ./nmap2json.py -o <outputfile>.json")
             sys.exit(1)
     except Exception as e:
         print(f"Error processing XML file: {e}")
